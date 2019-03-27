@@ -19,4 +19,4 @@ spring:
             non_contextual_creation: true
 
 server:
-  port: 8093
+  port: 8094
