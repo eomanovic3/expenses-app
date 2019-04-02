@@ -1,7 +1,5 @@
 package com.expenses.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +18,7 @@ public class Location {
 
     public Location(){}
 
-    public Location(@NotNull(message = "Longitude cannot be null") Float longitude, @NotNull(message = "Latitude cannot be null") Float latitude) {
+    public Location(Float longitude, Float latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }
@@ -40,12 +38,4 @@ public class Location {
     public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
-//
-//    public Expense getExpense() {
-//        return expense;
-//    }
-//
-//    public void setExpense(Expense expense) {
-//        this.expense = expense;
-//    }
 }

@@ -1,18 +1,20 @@
 package models;
 
-import java.sql.Timestamp;
-import models.Location;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Expense{
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-    public enum Category
-    {
+public class Expense {
+
+    public enum Category {
         HEALTH_CARE,
         FOOD,
-        AUTOMOBILE
+        AUTOMOBILE,
+        PRESENTS
     }
-    public enum PAYMETHOD
-    {
+
+    public enum PAYMETHOD {
         CASH,
         CARD,
         DEBIT
@@ -22,22 +24,34 @@ public class Expense{
     private Float amount;
     private Category category;
     private PAYMETHOD payMethod;
-    private Timestamp datetime;
+    private Date date;
     private String description;
     private String payee;
     private Location location;
+    private Boolean expenseAdded;
 
-    public Expense() {}
+    public Expense() {
+    }
 
-    public Expense(Integer expenseId, Float amount, Category category,PAYMETHOD payMethod, Timestamp datetime, String description, Location location) {
-        this.expenseId = expenseId;
+    public Expense(Float amount, Category category, PAYMETHOD payMethod, Date date, String description, String payee, Location location, Boolean expenseAdded) {
         this.amount = amount;
         this.category = category;
         this.payMethod = payMethod;
-        this.datetime = datetime;
+        this.date = date;
         this.description = description;
+        this.payee = payee;
         this.location = location;
+        this.expenseAdded = expenseAdded;
     }
+
+    public Integer getExpenseId() {
+        return expenseId;
+    }
+
+    public void setExpenseId(Integer expenseId) {
+        this.expenseId = expenseId;
+    }
+
     public Float getAmount() {
         return amount;
     }
@@ -62,12 +76,12 @@ public class Expense{
         this.payMethod = payMethod;
     }
 
-    public Timestamp getDatetime() {
-        return datetime;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDatetime(Timestamp datetime) {
-        this.datetime = datetime;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getDescription() {
@@ -81,9 +95,58 @@ public class Expense{
     public Location getLocation() {
         return location;
     }
-
     public void setLocation(Location location) {
         this.location = location;
     }
 
+    public String getPayee() {
+        return payee;
+    }
+
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    public Boolean getExpenseAdded() {
+        return expenseAdded;
+    }
+
+    public void setExpenseAdded(Boolean expenseAdded) {
+        this.expenseAdded = expenseAdded;
+    }
+
+    @JsonIgnore
+    public String getDateFormatted() {
+        SimpleDateFormat printDateFormat = new SimpleDateFormat("dd MMM, yyyy");
+        String dateFormatted = printDateFormat.format(date);
+        return dateFormatted;
+    }
+//
+//    @JsonIgnore
+//    public String getDateFromTimestamp() {
+//        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+//        Date date = null;
+//        try {
+//            date = sdf1.parse(this.datetime.toString());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        SimpleDateFormat printDateFormat = new SimpleDateFormat("dd MMM, yyyy");
+//        String dateWithoutTime = printDateFormat.format(date);
+//        return dateWithoutTime;
+//    }
+//
+//    @JsonIgnore
+//    public String getTimeFromTimestamp() {
+//        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+//        Date date = null;
+//        try {
+//            date = sdf1.parse(this.datetime.toString());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        SimpleDateFormat printDateFormat = new SimpleDateFormat("hh:mm");
+//        String datetimeWithoutDate = printDateFormat.format(date);
+//        return datetimeWithoutDate;
+//    }
 }

@@ -1,0 +1,23 @@
+@(loginForm: Form[Login])
+
+    @main("Expense manager") {
+        @defining(play.core.PlayVersion.current) { version =>
+            <div id="content" class="col-md-12 mt-5" >
+                @helper.form(action = routes.UserController.authenticate()) {
+                    @if(loginForm.hasGlobalErrors) {
+                        <p class="error">
+                            Something went wrong
+                        </p>
+                    }
+                    <div class="m-auto col-md-4">
+                        <hr class="colorgraph"><br>
+
+                        <input type="text" class="form-control loginInput" name="username" placeholder="Username" required="" autofocus="" />
+                        <input type="password" class="form-control loginInput" name="Password" placeholder="Password" required=""/>
+
+                        <button class="btn btn-lg btn-primary btn-block loginButton" value="Login" type="Submit">Login</button>
+                    </div>
+                }
+            </div>
+        }
+    }

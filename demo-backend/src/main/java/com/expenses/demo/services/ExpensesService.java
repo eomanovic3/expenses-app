@@ -1,7 +1,7 @@
 package com.expenses.demo.services;
 
 import com.expenses.demo.models.Expense;
-import com.expenses.demo.repositories.ExpensesRepository;
+import com.expenses.demo.repositories.ExpenseRepository;
 import com.expenses.demo.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +14,11 @@ import java.util.Optional;
 @Component
 public class ExpensesService {
 
-    private final ExpensesRepository expensesRepository;
+    private final ExpenseRepository expensesRepository;
     private final LocationRepository locationRepository;
 
     @Autowired
-    public ExpensesService(ExpensesRepository expensesRepository, LocationRepository locationRepository) {
+    public ExpensesService(ExpenseRepository expensesRepository, LocationRepository locationRepository) {
         this.expensesRepository = expensesRepository;
         this.locationRepository = locationRepository;
     }
@@ -45,7 +45,9 @@ public class ExpensesService {
 
     public ResponseEntity addExpense(Expense expense) {
         expensesRepository.save(expense);
-        return new ResponseEntity(expense, HttpStatus.OK);
+        List<Expense> expensesFromDatabase = expensesRepository.findAll();
+
+        return new ResponseEntity(expensesFromDatabase, HttpStatus.OK);
     }
 
     public ResponseEntity updateExpense(Integer id, Expense expense) {
@@ -57,11 +59,15 @@ public class ExpensesService {
 //        expenseInDatabase.get().setLocation(expense.getLocation());
         expenseInDatabase.get().setPayMethod(expense.getPayMethod());
         expenseInDatabase.get().setDescription(expense.getDescription());
-        expenseInDatabase.get().setDatetime(expense.getDatetime());
+        expenseInDatabase.get().setDate(expense.getDate());
         expenseInDatabase.get().setCategory(expense.getCategory());
         expenseInDatabase.get().setAmount(expense.getAmount());
+        expenseInDatabase.get().setPayee(expense.getPayee());
+
         expensesRepository.save(expenseInDatabase.get());
-        return new ResponseEntity(expensesRepository.getOne(id), HttpStatus.OK);
+        List<Expense> expensesFromDatabase = expensesRepository.findAll();
+
+        return new ResponseEntity(expensesFromDatabase, HttpStatus.OK);
     }
 
     public ResponseEntity deleteExpense(Integer id) {

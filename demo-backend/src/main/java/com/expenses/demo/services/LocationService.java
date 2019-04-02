@@ -1,8 +1,6 @@
 package com.expenses.demo.services;
 
-import com.expenses.demo.models.Expense;
 import com.expenses.demo.models.Location;
-import com.expenses.demo.repositories.ExpensesRepository;
 import com.expenses.demo.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

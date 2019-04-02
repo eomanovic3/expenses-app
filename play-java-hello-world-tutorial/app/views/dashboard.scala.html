@@ -1,0 +1,19 @@
+@()
+
+@main("Expense manager") {
+    @defining(play.core.PlayVersion.current) { version =>
+        <div id="content" class="container col-md-12 mt-5" >
+            <div>
+                @if((session.get("alert") != null)) {
+                    @if((session.get("username") != null)) {
+                        <div id="alert-success" class="alert alert-success" role="alert">
+                            You are logged in Expense Tracker app !
+                        </div>
+                    }
+                    @session.remove("alert")
+                }
+            </div>
+    }
+    <p>GRAPHS</p>
+</div>
+}

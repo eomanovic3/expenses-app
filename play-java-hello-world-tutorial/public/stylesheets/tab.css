@@ -1,0 +1,36 @@
+
+.modal-content #tabs{
+    background: #007b5e;
+    color: #eee;
+}
+.modal-content #tabs h6.section-title{
+    color: #eee;
+}
+.modal-content #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #0062cc;
+    background-color: transparent;
+    border-color: transparent transparent #f3f3f3;
+    border-bottom: 3px solid !important;
+    font-size: 16px;
+    font-weight: bold;
+}
+.modal-content .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: #0062cc;
+    font-size: 16px;
+    font-weight: 600;
+}
+.modal-content .nav-link:hover {
+    border: none;
+}
+.modal-content thead{
+    background: #f3f3f3;
+    color: #333;
+}
+.modal-content a{
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}

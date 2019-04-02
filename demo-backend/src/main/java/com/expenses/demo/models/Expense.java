@@ -2,20 +2,20 @@ package com.expenses.demo.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "expense")
 public class Expense {
 
-    public enum Category
-    {
+    public enum Category {
         HEALTH_CARE,
         FOOD,
-        AUTOMOBILE
+        AUTOMOBILE,
+        PRESENTS
     }
-    public enum PAYMETHOD
-    {
+
+    public enum PAYMETHOD {
         CASH,
         CARD,
         DEBIT
@@ -37,9 +37,8 @@ public class Expense {
     @Column(name = "payMethod")
     private PAYMETHOD payMethod;
 
-    @NotNull(message = "Date cannot be null")
-    @Column(name = "datetime")
-    private Timestamp datetime;
+    @Column(name = "date")
+    private Date date;
 
     @Column(name = "description")
     private String description;
@@ -47,19 +46,25 @@ public class Expense {
     @Column(name = "payee")
     private String payee;
 
+    @Column(name = "expense")
+    private Boolean expenseAdded;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "locationId")
     private Location location;
 
     public Expense() {}
 
-    public Expense(@NotNull(message = "Amount cannot be null") Float amount, @NotNull(message = "Category cannot be null") Category category, @NotNull(message = "Pay method cannot be null") PAYMETHOD payMethod, @NotNull(message = "Date cannot be null") Timestamp datetime, String description, Location location) {
+    public Expense(Float amount, Category category, PAYMETHOD payMethod, Date date,
+                   String description, String payee, Location location, Boolean expenseAdded) {
         this.amount = amount;
         this.category = category;
         this.payMethod = payMethod;
-        this.datetime = datetime;
+        this.date = date;
         this.description = description;
+        this.payee = payee;
         this.location = location;
+        this.expenseAdded = expenseAdded;
     }
 
     public Float getAmount() {
@@ -86,12 +91,13 @@ public class Expense {
         this.payMethod = payMethod;
     }
 
-    public Timestamp getDatetime() {
-        return datetime;
+
+    public Date getDate() {
+        return date;
     }
 
-    public void setDatetime(Timestamp datetime) {
-        this.datetime = datetime;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getDescription() {
@@ -108,5 +114,29 @@ public class Expense {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Integer getExpenseId() {
+        return expenseId;
+    }
+
+    public void setExpenseId(Integer expenseId) {
+        this.expenseId = expenseId;
+    }
+
+    public String getPayee() {
+        return payee;
+    }
+
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    public Boolean getExpenseAdded() {
+        return expenseAdded;
+    }
+
+    public void setExpenseAdded(Boolean expenseAdded) {
+        this.expenseAdded = expenseAdded;
     }
 }

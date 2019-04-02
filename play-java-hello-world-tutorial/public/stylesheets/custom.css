@@ -1,0 +1,44 @@
+body {
+    padding-top: 22px !important;
+}
+.dollarClass{
+    font-size: 2em;
+}
+.editModalListItem {
+    padding: 6px !important;
+    height: 86px !important;
+    border-radius: 3px !important;
+}
+.recentTransactionHeading{
+    display: inline-block;
+}
+
+.alert{
+    margin: 2px;
+}
+.addButton{
+    padding-right: 0 !important;
+    border-top: none !important;
+}
+
+.editButton{
+    padding-top: 0 !important;
+    border-top: none !important;
+}
+
+.modal-header{
+    background-color: aliceblue;
+}
+
+.incomeExpenseNav{
+    position: unset !important;
+    padding-top: 3%;
+}
+
+.expense{
+    color: #db2828 !important;
+}
+
+.income{
+    color: #21ba45 !important;
+}

@@ -1,0 +1,9 @@
+@(expenseForm: Form[Expense], locationForm: Form[Location])
+
+@helper.form(action = routes.ExpenseController.updateExpense(), 'id -> "expenseUpdateForm") {
+    @_expenseFormFields(expenseForm, locationForm)
+    <div class="modal-footer editButton">
+        <button type="submit" class="btn btn-primary">
+            Save changes</button>
+    </div>
+}

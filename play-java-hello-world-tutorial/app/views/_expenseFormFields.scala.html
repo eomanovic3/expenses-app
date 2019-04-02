@@ -1,0 +1,41 @@
+@(expenseForm: Form[Expense], locationForm: Form[Location])
+<div class="modal-body">
+    <div class="card">
+        <ul class="list-group list-group-flush editGroup">
+            <li class="list-group-item editModalListItem" style="display: none">
+                @helper.inputText(expenseForm("expenseId"), 'class -> "form-control")</li>
+            <li class="list-group-item editModalListItem" style="display: none">
+            @helper.inputText(expenseForm("expenseAdded"), 'class -> "form-control")</li>
+            <li class="list-group-item editModalListItem">
+            @helper.inputText(expenseForm("Amount"), 'class -> "form-control", 'type -> "number")</li>
+            <li class="list-group-item editModalListItem">
+            @helper.inputText(expenseForm("Description"), 'class -> "form-control")</li>
+            <li class="list-group-item editModalListItem">
+            @helper.inputText(expenseForm("Payee"), 'class -> "form-control")</li>
+            <li class="list-group-item editModalListItem">
+            @helper.select(
+                field = expenseForm("Category"),
+                options = Seq(
+                    "HEALTH_CARE" -> "HEALTH_CARE",
+                    "FOOD" -> "FOOD",
+                    "AUTOMOBILE" -> "AUTOMOBILE",
+                    "PRESENTS" -> "PRESENTS"
+                ), 'class -> "form-control")
+            </li>
+            <li class="list-group-item editModalListItem">
+            @helper.select(
+                field = expenseForm("Payment method"),
+                options = Seq(
+                    "CASH" -> "CASH",
+                    "CARD" -> "CARD",
+                    "DEBIT" -> "DEBIT"
+                ), 'class -> "form-control")
+            </li>
+            <li class="list-group-item editModalListItem" style="display: none;">
+                @helper.inputText(locationForm("locationId"), 'class -> "form-control", 'id -> "locationId")
+                @helper.inputText(locationForm("latitude"), 'class -> "form-control", 'id -> "latitude")
+                @helper.inputText(locationForm("longitude"), 'class -> "form-control", 'id -> "longitude")
+            </li>
+        </ul>
+    </div>
+</div>

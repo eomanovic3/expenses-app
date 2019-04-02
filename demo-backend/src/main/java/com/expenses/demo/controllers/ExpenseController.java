@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/expenses")
-public class ExpensesController {
+public class ExpenseController {
 
     private final ExpensesService expensesService;
-    public ExpensesController(ExpensesService expensesService){
+    public ExpenseController(ExpensesService expensesService){
         this.expensesService = expensesService;
     }
 
