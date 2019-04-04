@@ -1,0 +1,282 @@
+@helper.form(action = routes.ExpenseController.addExpense()) {
+    <div class="modal-body">
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Amount</span>
+                    <input name="amount" class="form-control" placeholder="Write amount" type="number" step="0.01"></li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Description</span>
+                    <input name="description" class="form-control" placeholder="Write description">
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Payee</span>
+                    <input name="payee" class="form-control" placeholder="To whom you pay">
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Category</span>
+                    <select name="category" class="form-control">
+                        <option value="HEALTH_CARE"> HEALTH_CARE</option>
+                        <option value="FOOD">FOOD</option>
+                        <option value="AUTOMOBILE">AUTOMOBILE</option>
+                        <option value="PRESENTS">PRESENTS</option>
+                    </select>
+                </li>
+                <li class="list-group-item">
+                    <span class="font-weight-bold">Payment method</span>
+                    <select name="payMethod" class="form-control">
+                        <option value="CASH"> CASH</option>
+                        <option value="CARD">CARD</option>
+                        <option value="DEBIT">DEBIT</option>
+                    </select>
+                </li>
+                <li class="list-group-item" style="display: none;">
+                    <input class="form-control" id="locationId" name="locationId">
+                    <input class="form-control" id="longitude" name="longitude">
+                    <input class="form-control" id="latitude" name="latitude">
+                </li>
+                <li class="list-group-item" style="display: none;">
+                    <input name="expenseAdded" checked type="checkbox">
+                </li>
+                <li class="list-group-item">
+                    <div id="mapExpense" tabindex="0"></div>
+                </li>
+            </ul>
+        </div>
+        <div class="modal-footer addButton">
+            <button type="submit" class="btn btn-primary" onclick="reloadPage()">
+                Save changes</button>
+        </div>
+    </div>
+    <script>
+            (function (f) {
+                if (typeof exports === "object" && typeof module !== "undefined") {
+                    module.exports = f()
+                } else if (typeof define === "function" && define.amd) {
+                    define([], f)
+                } else {
+                    var g;
+                    if (typeof window !== "undefined") {
+                        g = window
+                    } else if (typeof global !== "undefined") {
+                        g = global
+                    } else if (typeof self !== "undefined") {
+                        g = self
+                    } else {
+                        g = this
+                    }
+                    (g.ol || (g.ol = {})).SearchLayer = f()
+                }
+            })(function () {
+                var define, module, exports;
+                return function e(t, n, r) {
+                    function s(o, u) {
+                        if (!n[o]) {
+                            if (!t[o]) {
+                                var a = typeof require == "function" && require;
+                                if (!u && a) return a(o, !0);
+                                if (i) return i(o, !0);
+                                var f = new Error("Cannot find module '" + o + "'");
+                                throw f.code = "MODULE_NOT_FOUND", f
+                            }
+                            var l = n[o] = {exports: {}};
+                            t[o][0].call(l.exports, function (e) {
+                                var n = t[o][1][e];
+                                return s(n ? n : e)
+                            }, l, l.exports, e, t, n, r)
+                        }
+                        return n[o].exports
+                    }
+
+                    var i = typeof require == "function" && require;
+                    for (var o = 0; o < r.length; o++) s(r[o]);
+                    return s
+                }({
+                    1: [function (require, module, exports) {
+                        var utils = require("./utils");
+
+                        function SearchLayer(optOptions) {
+                            var horseyComponent;
+                            var select;
+                            var options = optOptions || {};
+                            if (optOptions.layer) {
+                                options.layer = optOptions.layer
+                            } else {
+                                throw new Error("error")
+                            }
+                            options.mapExpense = optOptions.mapExpense;
+                            var source;
+                            if (options.layer instanceof ol.layer.Image && options.layer.getSource() instanceof ol.source.ImageVector) {
+                                source = options.layer.getSource().getSource()
+                            } else if (options.layer instanceof ol.layer.Vector) {
+                                source = options.layer.getSource()
+                            }
+                            options.colName = optOptions.colName;
+                            var button = document.createElement("button");
+                            var toogleHideShowInput = function () {
+                                var input = document.querySelector("form > .search-layer-input-search");
+                                if (utils.hasClass(input, "search-layer-collapsed")) {
+                                    utils.removeClass(input, "search-layer-collapsed")
+                                } else {
+                                    input.value = "";
+                                    utils.addClass(input, "search-layer-collapsed");
+                                    horseyComponent.hide();
+                                    select.getFeatures().clear()
+                                }
+                            };
+                            button.addEventListener("click", toogleHideShowInput, false);
+                            button.addEventListener("touchstart", toogleHideShowInput, false);
+                            var form = document.createElement("form");
+                            form.setAttribute("id", "random");
+                            form.onsubmit = undefined;
+                            var input = document.createElement("input");
+                            input.setAttribute("id", "ol-search-input");
+                            var defaultInputClass = ["search-layer-input-search"];
+                            if (optOptions.collapsed) {
+                                defaultInputClass.push("search-layer-collapsed")
+                            }
+                            input.setAttribute("class", defaultInputClass.join(" "));
+                            input.setAttribute("placeholder", "Search ...");
+                            input.setAttribute("type", "text");
+                            form.appendChild(input);
+                            var element = document.createElement("div");
+                            element.className = "search-layer ol-unselectable ol-control";
+                            element.appendChild(button);
+                            element.appendChild(form);
+                            ol.control.Control.call(this, {element: element, target: options.target});
+                            select = new ol.interaction.Select({
+                                id: options.selectId || "defaultSearchLayer",
+                                layers: [options.layer],
+                                condition: ol.events.condition.never
+                            });
+                            var mapExpense = options.mapExpense;
+                            mapExpense.addInteraction(select);
+                            var typesToZoomToExtent = ["MultiPoint", "LineString", "MultiLineString", "MultiPolygon", "Polygon"];
+                            var typesToZoomToCenterAndZoom = ["point"];
+                            var returnHorsey = function (input, source, mapExpense, select, options) {
+                                horsey(input, {
+                                    source: [{
+                                        list: source.getFeatures().mapExpense(function (el, i) {
+                                            if (el.getId() === undefined) {
+                                                el.setId(i)
+                                            }
+                                            return {text: el.get(options.colName), value: el.getId()}
+                                        })
+                                    }], getText: "text", getValue: "value", predictNextSearch: function (info) {
+                                        var feat = source.getFeatureById(info.selection.value);
+                                        var featType = feat.getGeometry().getType();
+                                        if (typesToZoomToCenterAndZoom.indexOf(featType) !== -1) {
+                                            var newCenter = ol.extent.getCenter(feat.getGeometry().getExtent());
+                                            mapExpense.getView().setCenter(newCenter);
+                                            mapExpense.getView().setZoom(options.zoom || 12)
+                                        } else if (typesToZoomToExtent.indexOf(featType) !== -1) {
+                                            mapExpense.getView().fit(feat.getGeometry().getExtent(), mapExpense.getSize())
+                                        }
+                                        select.getFeatures().clear();
+                                        select.getFeatures().push(feat)
+                                    }
+                                })
+                            };
+                            if (source.getState() === "ready") {
+                                horseyComponent = returnHorsey(input, source, mapExpense, select, options)
+                            }
+                            source.once("change", function (e) {
+                                if (source.getState() === "ready") {
+                                    horseyComponent = returnHorsey(input, source, mapExpense, select, options)
+                                }
+                            })
+                        }
+
+                        ol.inherits(SearchLayer, ol.control.Control);
+                        module.exports = SearchLayer
+                    }, {"./utils": 2}], 2: [function (require, module, exports) {
+                        "use strict";
+
+                        function hasClass(el, cls) {
+                            return el.className && new RegExp("(\\s|^)" + cls + "(\\s|$)").test(el.className)
+                        }
+
+                        function addClass(elem, className) {
+                            if (!hasClass(elem, className)) {
+                                elem.className += " " + className
+                            }
+                        }
+
+                        function removeClass(elem, className) {
+                            var newClass = " " + elem.className.replace(/[\t\r\n]/g, " ") + " ";
+                            if (hasClass(elem, className)) {
+                                while (newClass.indexOf(" " + className + " ") >= 0) {
+                                    newClass = newClass.replace(" " + className + " ", " ")
+                                }
+                                elem.className = newClass.replace(/^\s+|\s+$/g, "")
+                            }
+                        }
+
+                        module.exports = {addClass: addClass, hasClass: hasClass, removeClass: removeClass}
+                    }, {}]
+                }, {}, [1])(1)
+            })
+
+            const markerSourceExpense = new ol.source.Vector();
+
+            var markerStyleExpense = new ol.style.Style({
+                image: new ol.style.Icon(({
+                    anchor: [0.5, 46],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    opacity: 0.75,
+                    src: 'https://prospectareachamber.org/wp-content/uploads/2017/12/map-marker-icon-e1512334260964.png'
+                }))
+            });
+
+            var mapExpense = new ol.Map({
+                target: 'mapExpense',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM(),
+                    }),
+                    new ol.layer.Vector({
+                        source: markerSourceExpense,
+                        style: markerStyleExpense,
+                    }),
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([6.661594, 50.433237]),
+                    zoom: 3,
+                })
+            });
+
+
+            function addMarkerExpense(lon, lat) {
+                console.log('lon:', lon);
+                console.log('lat:', lat);
+                var features = markerSourceExpense.getFeatures();
+                features.forEach((feature) => {
+                    markerSourceExpense.removeFeature(feature);
+            });
+                var featuresIncome = markerSourceIncome.getFeatures();
+                featuresIncome.forEach((feature) => {
+                    markerSourceIncome.removeFeature(feature);
+            });
+                var iconFeatureExpensesExpense = [];
+
+                var iconFeatureExpense = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.transform([lon, lat], 'EPSG:4326',
+                            'EPSG:3857')),
+                    name: 'Null Island',
+                    population: 4000,
+                    rainfall: 500
+                });
+
+                markerSourceExpense.addFeature(iconFeatureExpense);
+            }
+
+            mapExpense.on('singleclick', function (event) {
+                var lonLat = ol.proj.toLonLat(event.coordinate);
+                $('#longitude').val(lonLat[0]);
+                $('#latitude').val(lonLat[1]);
+                addMarkerExpense(lonLat[0], lonLat[1]);
+            });
+
+    </script>
+}

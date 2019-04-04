@@ -3,7 +3,10 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class Expense {
 
@@ -31,17 +34,6 @@ public class Expense {
     private Boolean expenseAdded;
 
     public Expense() {
-    }
-
-    public Expense(Float amount, Category category, PAYMETHOD payMethod, Date date, String description, String payee, Location location, Boolean expenseAdded) {
-        this.amount = amount;
-        this.category = category;
-        this.payMethod = payMethod;
-        this.date = date;
-        this.description = description;
-        this.payee = payee;
-        this.location = location;
-        this.expenseAdded = expenseAdded;
     }
 
     public Integer getExpenseId() {
@@ -120,6 +112,17 @@ public class Expense {
         SimpleDateFormat printDateFormat = new SimpleDateFormat("dd MMM, yyyy");
         String dateFormatted = printDateFormat.format(date);
         return dateFormatted;
+    }
+    public Expense(Float amount, Category category, PAYMETHOD payMethod, Date date, String description, String payee,
+                   Location location, Boolean expenseAdded) {
+        this.amount = amount;
+        this.category = category;
+        this.payMethod = payMethod;
+        this.date = date;
+        this.description = description;
+        this.payee = payee;
+        this.location = location;
+        this.expenseAdded = expenseAdded;
     }
 //
 //    @JsonIgnore

@@ -5,184 +5,106 @@
     @defining(play.core.PlayVersion.current) { version =>
         @if(session.get("username") != null) {
             <div id="content" class="container col-md-12 mt-5" >
-                    <!-- Modal -->
-                <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content col-md-12">
-                            <div class="col-md-12">
-                                <nav class="incomeExpenseNav col-md-12">
-                                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active expense" id="nav-expense-tab" data-toggle="tab" href="#nav-expense" role="tab" aria-controls="nav-expense" aria-selected="true">
-                                            Expense</a>
-                                        <a class="nav-item nav-link income" id="nav-income-tab" data-toggle="tab" href="#nav-income" role="tab" aria-controls="nav-income" aria-selected="false">
-                                            Income</a>
-                                    </div>
-                                </nav>
-                            </div>
-                            <div class="tab-content col-md-12" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="nav-expense" role="tabpanel" aria-labelledby="nav-expense-tab">
-                                @helper.form(action = routes.ExpenseController.addExpense()) {
-                                    <div class="modal-body">
-                                        <div class="card">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Amount</span>
-                                                    <input name="amount" class="form-control" placeholder="Write amount" type="number" step="0.01"></li>
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Description</span>
-                                                    <input name="description" class="form-control" placeholder="Write description">
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Payee</span>
-                                                    <input name="payee" class="form-control" placeholder="To whom you pay">
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Category</span>
-                                                    <select name="category" class="form-control">
-                                                        <option value="HEALTH_CARE"> HEALTH_CARE</option>
-                                                        <option value="FOOD">FOOD</option>
-                                                        <option value="AUTOMOBILE">AUTOMOBILE</option>
-                                                        <option value="PRESENTS">PRESENTS</option>
-                                                    </select>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Payment method</span>
-                                                    <select name="payMethod" class="form-control">
-                                                        <option value="CASH"> CASH</option>
-                                                        <option value="CARD">CARD</option>
-                                                        <option value="DEBIT">DEBIT</option>
-                                                    </select>
-                                                </li>
-                                                <li class="list-group-item" style="display: none;">
-                                                    <input class="form-control" id="locationId" name="locationId">
-                                                    <input class="form-control" id="longitude" name="longitude">
-                                                    <input class="form-control" id="latitude" name="latitude">
-                                                </li>
-                                                <li class="list-group-item" style="display: none;">
-                                                    <input name="expenseAdded" checked type="checkbox">
-                                                </li>
-                                            </ul>
+                <div id="transactions">
+                        <!-- Modal -->
+                    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content col-md-12 p-0">
+                                <div class="col-md-12 p-0">
+                                    <nav class="incomeExpenseNav col-md-12">
+                                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active expense" id="nav-expense-tab" data-toggle="tab" href="#nav-expense" role="tab" aria-controls="nav-expense" aria-selected="true">
+                                                Expense</a>
+                                            <a class="nav-item nav-link income" id="nav-income-tab" data-toggle="tab" href="#nav-income" role="tab" aria-controls="nav-income" aria-selected="false" onclick="reloadIncomeMap()">
+                                                Income</a>
                                         </div>
-                                        <div class="modal-footer addButton">
-                                            <button type="submit" class="btn btn-primary">
-                                                Save changes</button>
-                                        </div>
-                                    </div>
-                                }
+                                    </nav>
                                 </div>
-                                <div class="tab-pane fade" id="nav-income" role="tabpanel" aria-labelledby="nav-income-tab">
-                                @helper.form(action = routes.ExpenseController.addExpense()) {
-                                    <div class="modal-body">
-                                        <div class="card">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Amount</span>
-                                                    <input name="amount" class="form-control" placeholder="Write amount" type="number" step="0.01"></li>
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Description</span>
-                                                    <input name="description" class="form-control" placeholder="Write description">
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Payee</span>
-                                                    <input name="payee" class="form-control" placeholder="To whom you pay">
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Category</span>
-                                                    <select name="category" class="form-control">
-                                                        <option value="HEALTH_CARE"> HEALTH_CARE</option>
-                                                        <option value="FOOD">FOOD</option>
-                                                        <option value="AUTOMOBILE">AUTOMOBILE</option>
-                                                        <option value="PRESENTS">PRESENTS</option>
-                                                    </select>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="font-weight-bold">Payment method</span>
-                                                    <select name="payMethod" class="form-control">
-                                                        <option value="CASH"> CASH</option>
-                                                        <option value="CARD">CARD</option>
-                                                        <option value="DEBIT">DEBIT</option>
-                                                    </select>
-                                                </li>
-                                                <li class="list-group-item" style="display: none;">
-                                                    <input class="form-control" id="locationId" name="locationId">
-                                                    <input class="form-control" id="longitude" name="longitude">
-                                                    <input class="form-control" id="latitude" name="latitude">
-                                                </li>
-                                                <li class="list-group-item" style="display: none;">
-                                                    <input name="expenseAdded" value="0" type="checkbox">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="modal-footer addButton">
-                                            <button type="submit" class="btn btn-primary">
-                                                Save changes</button>
-                                        </div>
+                                <div class="tab-content col-md-12" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-expense" role="tabpanel" aria-labelledby="nav-expense-tab">
+                                        @addExpense()
                                     </div>
-                                }
+                                    <div class="tab-pane fade" id="nav-income" role="tabpanel" aria-labelledby="nav-income-tab">
+                                        @addIncome()
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row ml-auto col-md-12 float-left">
-                    <div class="shadow p-4 col-md-12">
-                        <div>
-                            <h3 class="pb-3 recentTransactionHeading">Recent transactions</h3>
-                            <button class="ui basic circular icon button" data-toggle="modal" data-target="#exampleModalLong">
-                                <i aria-hidden="true" class="grey fas fa-plus"></i>
-                            </button>
-                        </div>
-                        @if(expenses.length > 0){
-                            <div class="ui segment transactions-list__wrapper">
-                            @for(calObj <- expenses) {
-                                <div class="transaction-item"><div class="transaction-item__date">@calObj.getDateFormatted()</div>
-                                    <div class="transaction-item__info">
-                                        <i aria-hidden="true" class="grey arrow right icon"></i>
-                                        <div class="ui label">@calObj.getCategory()</div>
-                                        <span class="transaction-item__info__note"></span></div>
-                                    <div class="transaction-item__amount">
+                    <div class="row ml-auto col-md-12 float-left">
+                        <div class="shadow p-4 col-md-12">
+                            <div>
+                                <h3 class="pb-3 recentTransactionHeading">Recent transactions</h3>
+                                <button class="ui basic circular icon button" data-toggle="modal" data-target="#exampleModalLong" onclick="reloadMap()">
+                                    <i aria-hidden="true" class="grey fas fa-plus"></i>
+                                </button>
+                            </div>
+                            @if(expenses.length > 0) {
+                                <div class="ui segment transactions-list__wrapper">
+                                @for(calObj <- expenses) {
+                                    <div class="transaction-item"><div class="transaction-item__date">@calObj.getDateFormatted()</div>
+                                        <div class="transaction-item__info">
+                                            <i aria-hidden="true" class="grey arrow right icon"></i>
+                                            <div class="ui label">@calObj.getCategory()</div>
+                                            <span class="transaction-item__info__note"></span></div>
+                                        <div class="transaction-item__amount">
                                         @if(calObj.getExpenseAdded() == true){
                                             <span class="mono negative">- @calObj.getAmount() BAM</span>
                                         } else{
                                             <span class="mono positive">+ @calObj.getAmount() BAM</span>
                                         }
+                                        </div>
+                                        <div class="transaction-item__edit">
+                                            <button class="ui basic circular icon button" onclick="deleteExpense(@calObj.getExpenseId())">
+                                                <i aria-hidden="true" class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        <div class="transaction-item__edit">
+                                            <button class="ui basic circular icon button" data-backdrop="static" onclick="fillForm(@calObj.getExpenseId(), @calObj.getLocation().getLongitude(),@calObj.getLocation().getLatitude())" data-toggle="modal" data-target="#exampleModalEdit">
+                                                <i aria-hidden="true" class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="transaction-item__edit">
-                                        <button class="ui basic circular icon button" onclick="deleteExpense(@calObj.getExpenseId())">
-                                            <i aria-hidden="true" class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                    <div class="transaction-item__edit">
-                                        <button class="ui basic circular icon button" onclick="fillForm(@calObj.getExpenseId())" data-toggle="modal" data-target="#exampleModalEdit">
-                                            <i aria-hidden="true" class="fas fa-edit"></i>
-                                        </button>
-                                    </div>
+                                }
                                 </div>
                             }
                         </div>
-                        }
                     </div>
-                </div>
 
-                <div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title font-weight-bold" id="exampleModalLongTitle">Edit expense</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                                onclick="cleanForm()">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div id="editModalContent">
+                    <div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title font-weight-bold" id="exampleModalLongTitle">Edit expense</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                    onclick="cleanForm()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="editModalContent">
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <script>
+                    function reloadMap() {
+                        setTimeout(()=>{
+                            mapExpense.updateSize();                     },
+                        500
+                    );}
+
+                    function reloadIncomeMap() {
+                        setTimeout(()=>{
+                            mapIncome.updateSize();                     },
+                        500
+                    );}
+
+            </script>
         }
     }
 }

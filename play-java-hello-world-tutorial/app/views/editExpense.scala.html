@@ -3,7 +3,7 @@
 @helper.form(action = routes.ExpenseController.updateExpense(), 'id -> "expenseUpdateForm") {
     @_expenseFormFields(expenseForm, locationForm)
     <div class="modal-footer editButton">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" onclick="reloadPage()">
             Save changes</button>
     </div>
 }

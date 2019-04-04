@@ -1,5 +1,15 @@
 
-#map {
+#mapExpense {
+    height: 400px;
+    width: 400px;
+    margin: auto;
+}
+#mapIncome {
+    height: 400px;
+    width: 400px;
+    margin: auto;
+}
+#mapEdit {
     height: 400px;
     width: 400px;
     margin: auto;

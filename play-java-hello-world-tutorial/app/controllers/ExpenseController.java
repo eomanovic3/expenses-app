@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.CustomList;
 import models.Expense;
 import models.Location;
 import play.data.Form;
@@ -13,20 +14,20 @@ import services.CustomRestService;
 import views.html.editExpense;
 
 import javax.inject.Inject;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 
 public class ExpenseController extends Controller {
+    enum months {January, February, March, April, May, June, July, August, September, October, November, December};
     @Inject
     private CustomRestService service;
 
     @Inject
     private FormFactory formFactory;
+
+    public Result location(){
+        return ok(views.html.location.render());
+    }
 
     @Security.Authenticated(Secured.class)
     public Result index() {
@@ -36,7 +37,7 @@ public class ExpenseController extends Controller {
 
     @Security.Authenticated(Secured.class)
     public Result dashboard() {
-        return ok(views.html.dashboard.render());
+        return returnDashboard(service);
     }
 
     @Security.Authenticated(Secured.class)
@@ -49,7 +50,8 @@ public class ExpenseController extends Controller {
     public Result addExpense() {
         Form<Expense> expenseForm = formFactory.form(Expense.class);
         Expense expense = expenseForm.bindFromRequest().get();
-        expense.setDate(new Date());
+        Calendar c = Calendar.getInstance();
+        expense.setDate(new java.sql.Date(c.getTimeInMillis()));
         if(expense.getExpenseAdded() == null){
             expense.setExpenseAdded(false);
         }
@@ -105,6 +107,73 @@ public class ExpenseController extends Controller {
         }
         if (res != null) {
             return ok(views.html.index.render(expenses));
+        } else return ok();
+    }
+
+    public static Result returnDashboard(CustomRestService expenseService) {
+        JsonNode res = expenseService.getExpenses();
+        List<Expense> expenses = new ArrayList<Expense>();
+        for (JsonNode expense : res) {
+            expenses.add(Json.fromJson(expense, Expense.class));
+        }
+
+        var list = new ArrayList<CustomList>();
+
+        int count = 0;
+        for (int i = 0; i < Expense.Category.values().length; i++) {
+            var category = Expense.Category.values()[i];
+            for (int j = 0; j < expenses.size(); j++) {
+                if (expenses.get(j).getCategory() == category) {
+                    count = count + 1;
+                }
+            }
+            list.add(new CustomList(category.toString(), count));
+            count = 0;
+        }
+        var monthList = new ArrayList<CustomList>();
+        int monthCounter = 0;
+
+        for (int i = 0; i < months.values().length; i++) {
+            for (int j = 0; j < expenses.size(); j++) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(expenses.get(j).getDate());
+                int month = cal.get(Calendar.MONTH);
+                if (month == i) {
+                    monthCounter = monthCounter + 1;
+                }
+            }
+            monthList.add(new CustomList(months.values()[i].toString(), monthCounter));
+            monthCounter = 0;
+        }
+
+        List<Integer> listOfYears = new ArrayList<Integer>();
+        int yearCounter = 0;
+
+        for (int j = 0; j < expenses.size(); j++) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(expenses.get(j).getDate());
+            int year = cal.get(Calendar.YEAR);
+            listOfYears.add(year);
+        }
+
+        Set<Integer> uniqueYears = new HashSet<Integer>(listOfYears);
+        var listOfCustomYears =  new ArrayList<CustomList>();
+
+        for (Integer uniqueYear : uniqueYears) {
+            for (int j = 0; j < expenses.size(); j++) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(expenses.get(j).getDate());
+                int year = cal.get(Calendar.YEAR);
+                if (year == uniqueYear) {
+                    yearCounter = yearCounter + 1;
+                }
+            }
+            listOfCustomYears.add(new CustomList(uniqueYear.toString(), yearCounter));
+            yearCounter = 0;
+        }
+
+        if (res != null) {
+            return ok(views.html.dashboard.render(list, monthList, listOfCustomYears));
         } else return ok();
     }
 }

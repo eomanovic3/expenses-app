@@ -20,7 +20,7 @@ public class UserController extends Controller {
 
     public Result login() {
         if (session().containsKey("username")) {
-            return ok(views.html.dashboard.render());
+            return (Result) ExpenseController.returnDashboard(service);
         } else {
             Form<Login> loginForm = formFactory.form(Login.class);
             return ok(views.html.login.render(loginForm));
@@ -58,5 +58,4 @@ public class UserController extends Controller {
                 routes.UserController.login()
         );
     }
-
 }

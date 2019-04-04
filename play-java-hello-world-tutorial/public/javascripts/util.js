@@ -7,19 +7,45 @@ function deleteExpense(id) {
             url: '/deleteExpense/' + id,
             success: function () {
                 alert('You have deleted the expense !');
-                window.location.reload();
+                location.href = '/transactions';
             }
         })
     }
 }
 
-function fillForm(id) {
+function reloadEditMap(long, lat) {
+    setTimeout(()=>{
+        var features = markerSourceEdit.getFeatures();
+        features.forEach((feature) => {
+            markerSourceEdit.removeFeature(feature);
+        });
+
+        var iconFeatureEditsEditTwo = [];
+
+        var iconFeatureEditTwo = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.transform([long, lat], 'EPSG:4326',
+                'EPSG:3857')),
+            name: 'Null Island',
+            population: 4000,
+            rainfall: 500
+        });
+
+        markerSourceEdit.addFeature(iconFeatureEditTwo);
+        mapEdit.updateSize();                     },
+    500
+);}
+
+function fillForm(id, long, lat){
     $.ajax({
         url: '/editExpense/' + id,
         success: function (data) {
+            console.log(data);
             $("#editModalContent").append(data);
         }
-    })
+    });
+
+    reloadEditMap(long, lat);
+
 }
 
 function cleanForm() {
@@ -31,3 +57,23 @@ window.setTimeout(function () {
         $(this).remove();
     });
 }, 3000);
+
+function reloadPage(){
+    location.href = '/transactions';
+    location.reload();
+    var featuresExpense = markerSourceExpense.getFeatures();
+    featuresExpense.forEach((feature) => {
+        markerSourceExpense.removeFeature(feature);
+    });
+
+    var featuresIncome = markerSourceIncome.getFeatures();
+    featuresExpense.forEach((feature) => {
+        markerSourceIncome.removeFeature(feature);
+    });
+
+    var featuresEdit = markerSourceEdit.getFeatures();
+    featuresEdit.forEach((feature) => {
+        markerSourceEdit.removeFeature(feature);
+});
+    location.href = '/transactions';
+}

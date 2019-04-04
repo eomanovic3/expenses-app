@@ -1,3 +1,9 @@
+.activeClass {
+    color: #3f51b5 !important;
+    border-color: rgba(0, 0, 0, .15) !important;
+    background: rgba(0, 0, 0, .05);
+}
+
 body {
     padding-top: 22px !important;
 }

@@ -22,8 +22,19 @@
         <link rel="stylesheet" media="screen" href='@routes.Assets.versioned("stylesheets/login.css")'>
         <link rel="stylesheet" media="screen" href='@routes.Assets.versioned("stylesheets/tab.css")'>
         <link rel="stylesheet" media="screen" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-
         <link rel="shortcut icon" type="image/png" href='@routes.Assets.versioned("images/expense.png")'>
+
+        <link href="https://cdn.jsdelivr.net/npm/ol-geocoder/dist/ol-geocoder.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ol3/3.18.2/ol.css" type="text/css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/horsey/4.2.2/horsey.min.css" type="text/css">
+        <link rel="stylesheet" href="https://unpkg.com/openlayers/dist/ol.css">
+        <link rel="stylesheet" href="https://unpkg.com/ol-popup/src/ol-popup.css">
+        <script src="//cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/ol3/3.18.2/ol-debug.js"></script>
+        <script src="https://unpkg.com/openlayers"></script>
+        <script src="https://unpkg.com/ol-popup"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/horsey/4.2.2/horsey.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/ol-geocoder"></script>
 
         <script src="@routes.Assets.versioned("javascripts/jquery-3.3.1.min.js")" type="text/javascript"></script>
         <script src='@routes.Assets.versioned("javascripts/main.js")' type="text/javascript"></script>
@@ -32,29 +43,24 @@
         <script src='@routes.Assets.versioned("javascripts/bootstrap.js")' type="text/javascript"></script>
         <script src='@routes.Assets.versioned("javascripts/bootstrap.bundle.js")' type="text/javascript"></script>
         <script src='@routes.Assets.versioned("javascripts/util.js")' type="text/javascript"></script>
-
-
     </head>
     <body>
         @if(session.get("username") != null) {
             <nav class="open" id="navbarId">
                 <div class="ui blue fluid vertical labeled icon menu" id="navItems">
-                    <a class="active item" href="/">
+                    <a id="dashboard" class="nav-link activeClass item" href="@routes.ExpenseController.dashboard()" aria-selected="true" aria-controls="dashboard">
                         <i aria-hidden="true" class="fas fa-newspaper icon"></i>
                         Dashboard</a>
-                    <a class="item" href="/transactions">
+                    <a id="transactions" class="nav-link item" href="@routes.ExpenseController.index()" aria-selected="false" aria-controls="transactions">
                         <i aria-hidden="true" class="fas fa-exchange-alt icon"></i>
                         Transactions</a>
-                    <a class="item" href="/accounts">
-                        <i aria-hidden="true" class="fas fa-cogs icon"></i>
-                        Settings</a>
                     @if(session.get("username") != null) {
-                        <a class="item" href="@routes.UserController.logout()">
+                        <a id="login" class="nav-link  item" href="@routes.UserController.logout()" aria-selected="false" >
                             <i aria-hidden="true" class="fas fa-user-tie icon"></i>
                             Sign out
                         </a>
                     } else {
-                        <a class="item" href="@routes.UserController.login()">
+                        <a id="login" class="nav-link item" href="@routes.UserController.login()" aria-selected="false">
                             <i aria-hidden="true" class="fas fa-user-tie icon"></i>
                             Sign in
                         </a>
@@ -92,9 +98,28 @@
                 checkWidth();
                 // Bind event listener everytime the window size changes.
                 $(window).resize(checkWidth);
-        </script>
-        <script>
 
+                window.onload = function (ev) {
+                    console.log(window.location.pathname);
+                    $('a').removeClass('activeClass');
+                    if (window.location.pathname.toLocaleLowerCase() == '/transactions') {
+                        if (document.getElementById('transactions') != null) {
+                            document.getElementById('transactions').classList.add('activeClass');
+                        }
+                    }
+                    if (window.location.pathname.toLocaleLowerCase() == '/dashboard' ||
+                            window.location.pathname.toLocaleLowerCase() == '/') {
+                        if (document.getElementById('dashboard') != null) {
+                            document.getElementById('dashboard').classList.add('activeClass');
+                        }
+                    }
+                    if (window.location.pathname == '/addExpense'||
+                            window.location.pathname == '/updateExpense'){
+                        console.log('eee');
+                        window.location.replace("http://localhost:9000/transactions");
+
+                    }
+                }
         </script>
     </body>
 </html>
