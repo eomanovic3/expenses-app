@@ -12,13 +12,15 @@ public class Expense {
         HEALTH_CARE,
         FOOD,
         AUTOMOBILE,
-        PRESENTS
+        PRESENTS,
+        OTHER
     }
 
     public enum PAYMETHOD {
         CASH,
         CARD,
-        DEBIT
+        DEBIT,
+        OTHER
     }
 
     @Id

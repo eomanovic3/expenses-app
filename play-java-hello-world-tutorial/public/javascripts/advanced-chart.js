@@ -4,7 +4,6 @@ function capitalizeFirstLetter(string) {
 
 function drawPie(obj, divId, title) {
     let parsedJSON = JSON.parse(obj);
-    console.log(parsedJSON);
     var rows = [];
     for (var i = 0; i < parsedJSON.length; i++) {
         var row = {};
@@ -20,7 +19,7 @@ function drawPie(obj, divId, title) {
                 "font": "open sans"
             },
             "subtitle": {
-                "text": "A full pie chart to show off label collision detection and resolution.",
+                "text": "",
                 "color": "#999999",
                 "fontSize": 12,
                 "font": "open sans"

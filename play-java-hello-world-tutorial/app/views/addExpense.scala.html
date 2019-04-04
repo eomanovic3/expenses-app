@@ -20,6 +20,7 @@
                         <option value="FOOD">FOOD</option>
                         <option value="AUTOMOBILE">AUTOMOBILE</option>
                         <option value="PRESENTS">PRESENTS</option>
+                        <option value="OTHER">OTHER</option>
                     </select>
                 </li>
                 <li class="list-group-item">
@@ -28,12 +29,13 @@
                         <option value="CASH"> CASH</option>
                         <option value="CARD">CARD</option>
                         <option value="DEBIT">DEBIT</option>
+                        <option value="OTHER">OTHER</option>
                     </select>
                 </li>
                 <li class="list-group-item" style="display: none;">
                     <input class="form-control" id="locationId" name="locationId">
-                    <input class="form-control" id="longitude" name="longitude">
-                    <input class="form-control" id="latitude" name="latitude">
+                    <input class="form-control" id="longitudeAddExpense" name="longitude">
+                    <input class="form-control" id="latitudeAddExpense" name="latitude">
                 </li>
                 <li class="list-group-item" style="display: none;">
                     <input name="expenseAdded" checked type="checkbox">
@@ -273,8 +275,8 @@
 
             mapExpense.on('singleclick', function (event) {
                 var lonLat = ol.proj.toLonLat(event.coordinate);
-                $('#longitude').val(lonLat[0]);
-                $('#latitude').val(lonLat[1]);
+                $('#longitudeAddExpense').val(lonLat[0]);
+                $('#latitudeAddExpense').val(lonLat[1]);
                 addMarkerExpense(lonLat[0], lonLat[1]);
             });
 

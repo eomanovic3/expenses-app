@@ -19,7 +19,8 @@
                     "HEALTH_CARE" -> "HEALTH_CARE",
                     "FOOD" -> "FOOD",
                     "AUTOMOBILE" -> "AUTOMOBILE",
-                    "PRESENTS" -> "PRESENTS"
+                    "PRESENTS" -> "PRESENTS",
+                    "OTHER" -> "OTHER"
                 ), 'class -> "form-control")
             </li>
             <li class="list-group-item editModalListItem">
@@ -28,13 +29,14 @@
                 options = Seq(
                     "CASH" -> "CASH",
                     "CARD" -> "CARD",
-                    "DEBIT" -> "DEBIT"
+                    "DEBIT" -> "DEBIT",
+                    "OTHER" -> "OTHER"
                 ), 'class -> "form-control")
             </li>
             <li class="list-group-item editModalListItem" style="display: none;">
                 @helper.inputText(locationForm("locationId"), 'class -> "form-control", 'id -> "locationId")
-                @helper.inputText(locationForm("latitude"), 'class -> "form-control", 'id -> "latitude")
-                @helper.inputText(locationForm("longitude"), 'class -> "form-control", 'id -> "longitude")
+                @helper.inputText(locationForm("latitude"), 'class -> "form-control", 'id -> "latitudeEdit")
+                @helper.inputText(locationForm("longitude"), 'class -> "form-control", 'id -> "longitudeEdit")
             </li>
             <li class="list-group-item">
                 <div id="mapEdit" tabindex="0"></div>
@@ -263,8 +265,8 @@
 
         mapEdit.on('singleclick', function (event) {
             var lonLat = ol.proj.toLonLat(event.coordinate);
-            $('#longitude').val(lonLat[0]);
-            $('#latitude').val(lonLat[1]);
+            $('#longitudeEdit').val(lonLat[0]);
+            $('#latitudeEdit').val(lonLat[1]);
             addMarkerEdit(lonLat[0], lonLat[1]);
         });
 </script>

@@ -57,7 +57,7 @@ public class ExpensesService {
         if (!expenseInDatabase.isPresent()) {
             return new ResponseEntity("Expense with id:" + id + " was not found.", HttpStatus.NOT_FOUND);
         }
-//        expenseInDatabase.get().setLocation(expense.getLocation());
+        expenseInDatabase.get().setLocation(expense.getLocation());
         expenseInDatabase.get().setPayMethod(expense.getPayMethod());
         expenseInDatabase.get().setDescription(expense.getDescription());
         expenseInDatabase.get().setDate(expense.getDate());

@@ -48,3 +48,6 @@ body {
 .income{
     color: #21ba45 !important;
 }
+#pieChart1, #pieChart2{
+    margin-left: -7% !important;
+}

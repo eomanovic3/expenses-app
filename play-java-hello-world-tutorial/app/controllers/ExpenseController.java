@@ -61,6 +61,7 @@ public class ExpenseController extends Controller {
 
         expense.setLocation(location);
 
+
         JsonNode res = service.addExpense(expense);
         return getExpensesList(res);
     }
@@ -81,6 +82,9 @@ public class ExpenseController extends Controller {
         Form<Expense> expenseForm = formFactory.form(Expense.class).bindFromRequest();
         Expense expense = expenseForm.get();
 
+        Form<Location> locationForm = formFactory.form(Location.class).bindFromRequest();
+        Location location = locationForm.get();
+
         var serviceResult = service.getExpenseById(expense.getExpenseId());
         Expense expenseFromDatabase = Json.fromJson(serviceResult, Expense.class);
 
@@ -89,7 +93,7 @@ public class ExpenseController extends Controller {
         expenseFromDatabase.setPayee(expense.getPayee());
         expenseFromDatabase.setPayMethod(expense.getPayMethod());
         expenseFromDatabase.setCategory(expense.getCategory());
-        expenseFromDatabase.setLocation(new Location());
+        expenseFromDatabase.setLocation(location);
         JsonNode res = service.editExpenseInService(expenseFromDatabase);
         return getExpensesList(res);
     }
