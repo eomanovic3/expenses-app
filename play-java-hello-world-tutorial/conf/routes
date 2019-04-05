@@ -3,20 +3,22 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET        /                         controllers.UserController.login()
-GET        /dashboard                controllers.ExpenseController.dashboard()
-GET        /deleteExpense/:id        controllers.ExpenseController.deleteExpense(id: Integer)
-GET        /addExpense               controllers.ExpenseController.addExpense()
-GET        /editExpense/:id          controllers.ExpenseController.editExpense(id: Integer)
-GET        /updateExpense            controllers.ExpenseController.updateExpense()
-GET        /populateModal/:id        controllers.ExpenseController.populateModal(id: Integer)
-GET        /login                    controllers.UserController.login()
-GET        /authenticate             controllers.UserController.authenticate()
-GET        /error                    controllers.UserController.showErrorPage()
-GET        /logout                   controllers.UserController.logout()
-GET        /transactions             controllers.ExpenseController.index()
-GET        /location                controllers.ExpenseController.location()
+
+GET        /                                controllers.UserController.login()
+GET        /dashboard                       controllers.ExpenseController.dashboard()
+GET        /deleteExpense/:id               controllers.ExpenseController.deleteExpense(id: Integer)
+GET        /addExpense                      controllers.ExpenseController.addExpense()
+GET        /editExpense/:id                 controllers.ExpenseController.editExpense(id: Integer)
+GET        /updateExpense                   controllers.ExpenseController.updateExpense()
+GET        /populateModal/:id               controllers.ExpenseController.populateModal(id: Integer)
+GET        /filterData/:start/:end           controllers.ExpenseController.filterData(start: Long, end: Long)
+
+GET        /login                           controllers.UserController.login()
+GET        /authenticate                    controllers.UserController.authenticate()
+GET        /error                           controllers.UserController.showErrorPage()
+GET        /logout                          controllers.UserController.logout()
+GET        /transactions                    controllers.ExpenseController.index()
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)
+GET        /assets/*file                    controllers.Assets.versioned(path="/public", file: Asset)

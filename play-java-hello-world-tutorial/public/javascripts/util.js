@@ -39,7 +39,6 @@ function fillForm(id, long, lat){
     $.ajax({
         url: '/editExpense/' + id,
         success: function (data) {
-            console.log(data);
             $("#editModalContent").append(data);
         }
     });

@@ -1,0 +1,46 @@
+@(list: List[CategoryPerMonth], incomes:Double, expenses: Double, total: Double)
+
+<div class="col-md-6 float-left pr-0">
+    <div class="ui segment transactions-list__wrapper col-md-12 p-1">
+        @for(calObj<-list) {
+            <div class="transaction-item pl-0">
+                <div class="transaction-item__info">
+                    <i aria-hidden="true" class="grey arrow right icon"></i>
+                    <div class="ui label">@calObj.getName()</div>
+                    <span class="transaction-item__info__note"></span></div>
+                <div class="transaction-item__amount">
+                @if(calObj.getValue() < 0){
+                    <span class="mono negative">@calObj.getValue() BAM</span>
+                } else{
+                    <span class="mono positive">@calObj.getValue() BAM</span>
+                }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="col-md-6 float-right">
+    <div class="ui segment transactions-list__wrapper p-2"><table class="ui fixed unstackable very basic table">
+        <tbody class=""><tr class=""><td class="">
+            Total income</td>
+            <td class="right aligned">
+                <span class="mono positive" id="incomesTotal">
+                    @incomes BAM</span></td>
+        </tr>
+            <tr class=""><td class="">
+                Total expense</td>
+                <td class="right aligned">
+                    <span class="mono negative" id="expensesTotal">
+                        @expenses BAM</span></td>
+            </tr>
+            <tr class=""><td class=""></td>
+                <td class="right aligned">
+                    @if(total < 0){
+                        <span class="mono negative" id="total"> @total BAM</span>
+                    } else{
+                        <span class="mono positive" id="total"> @total BAM</span>
+                    }
+                </td></tr>
+        </tbody></table>
+    </div>
+</div>

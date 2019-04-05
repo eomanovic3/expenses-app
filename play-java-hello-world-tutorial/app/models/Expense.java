@@ -111,9 +111,9 @@ public class Expense {
 
     @JsonIgnore
     public String getDateFormatted() {
-        SimpleDateFormat printDateFormat = new SimpleDateFormat("dd MMM, yyyy");
-        String dateFormatted = printDateFormat.format(date);
-        return dateFormatted;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-dd-MM");
+        String Format = format.format(this.date);
+        return Format;
     }
     public Expense(Float amount, Category category, PAYMETHOD payMethod, Date date, String description, String payee,
                    Location location, Boolean expenseAdded) {
@@ -126,32 +126,4 @@ public class Expense {
         this.location = location;
         this.expenseAdded = expenseAdded;
     }
-//
-//    @JsonIgnore
-//    public String getDateFromTimestamp() {
-//        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
-//        Date date = null;
-//        try {
-//            date = sdf1.parse(this.datetime.toString());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        SimpleDateFormat printDateFormat = new SimpleDateFormat("dd MMM, yyyy");
-//        String dateWithoutTime = printDateFormat.format(date);
-//        return dateWithoutTime;
-//    }
-//
-//    @JsonIgnore
-//    public String getTimeFromTimestamp() {
-//        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
-//        Date date = null;
-//        try {
-//            date = sdf1.parse(this.datetime.toString());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        SimpleDateFormat printDateFormat = new SimpleDateFormat("hh:mm");
-//        String datetimeWithoutDate = printDateFormat.format(date);
-//        return datetimeWithoutDate;
-//    }
 }

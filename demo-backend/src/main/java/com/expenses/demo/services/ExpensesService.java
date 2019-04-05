@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class ExpensesService {
         if (expensesFromDatabase == null)
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
+        Collections.sort(expensesFromDatabase, Comparator.comparingInt(Expense::getExpenseId));
         return new ResponseEntity<List>(expensesFromDatabase, HttpStatus.OK);
     }
 
@@ -48,6 +50,7 @@ public class ExpensesService {
         expensesRepository.save(expense);
         List<Expense> expensesFromDatabase = expensesRepository.findAll();
 
+        Collections.sort(expensesFromDatabase, Comparator.comparingInt(Expense::getExpenseId));
         return new ResponseEntity(expensesFromDatabase, HttpStatus.OK);
     }
 
@@ -67,15 +70,17 @@ public class ExpensesService {
 
         expensesRepository.save(expenseInDatabase.get());
         List<Expense> expensesFromDatabase = expensesRepository.findAll();
+        Collections.sort(expensesFromDatabase, Comparator.comparingInt(Expense::getExpenseId));
 
         return new ResponseEntity(expensesFromDatabase, HttpStatus.OK);
     }
 
     public ResponseEntity deleteExpense(Integer id) {
         expensesRepository.deleteById(id);
-        List<Expense> expenses = expensesRepository.findAll();
-        Collections.sort(expenses, (left, right) -> left.getExpenseId() - right.getExpenseId());
-        return new ResponseEntity(expenses, HttpStatus.OK);
+        List<Expense> expensesFromDatabase = expensesRepository.findAll();
+        Collections.sort(expensesFromDatabase, Comparator.comparingInt(Expense::getExpenseId));
+
+        return new ResponseEntity(expensesFromDatabase, HttpStatus.OK);
     }
 
 }

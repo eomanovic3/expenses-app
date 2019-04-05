@@ -48,6 +48,16 @@ body {
 .income{
     color: #21ba45 !important;
 }
-#pieChart1, #pieChart2{
-    margin-left: -7% !important;
+#pieChart1{
+    margin-left: -5% !important;
+}
+#reportrange{
+    margin-top: 2px;
+    padding: 7px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    width: 17em;
+}
+.removeBorder{
+    border-bottom: none !important;
 }
