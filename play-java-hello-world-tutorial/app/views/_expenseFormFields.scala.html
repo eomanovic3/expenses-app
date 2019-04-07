@@ -11,7 +11,8 @@
             <li class="list-group-item editModalListItem">
             @helper.inputText(expenseForm("Description"), 'class -> "form-control")</li>
             <li class="list-group-item editModalListItem">
-            @helper.inputText(expenseForm("Payee"), 'class -> "form-control")</li>
+                <span class="font-weight-bold mb-2">Payee/Payer</span>
+                <input class="form-control" style="margin-top: 2%;" name="payee" value="@expenseForm.get().getPayee"></li>
             <li class="list-group-item editModalListItem">
             @helper.select(
                 field = expenseForm("Category"),
