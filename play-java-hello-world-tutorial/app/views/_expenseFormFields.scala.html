@@ -16,21 +16,21 @@
             @helper.select(
                 field = expenseForm("Category"),
                 options = Seq(
-                    "HEALTH_CARE" -> "HEALTH_CARE",
-                    "FOOD" -> "FOOD",
-                    "AUTOMOBILE" -> "AUTOMOBILE",
-                    "PRESENTS" -> "PRESENTS",
-                    "OTHER" -> "OTHER"
+                    "HEALTH_CARE" -> "Health care",
+                    "FOOD" -> "Fodd",
+                    "AUTOMOBILE" -> "Automobile",
+                    "PRESENTS" -> "Presents",
+                    "OTHER" -> "Other"
                 ), 'class -> "form-control")
             </li>
             <li class="list-group-item editModalListItem">
             @helper.select(
                 field = expenseForm("PayMethod"),
                 options = Seq(
-                    "CASH" -> "CASH",
-                    "CARD" -> "CARD",
-                    "DEBIT" -> "DEBIT",
-                    "OTHER" -> "OTHER"
+                    "CASH" -> "Cash",
+                    "CARD" -> "Card",
+                    "DEBIT" -> "Debit",
+                    "OTHER" -> "Other"
                 ), 'class -> "form-control")
             </li>
             <li class="list-group-item editModalListItem" style="display: none;">

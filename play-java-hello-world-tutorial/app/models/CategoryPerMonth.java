@@ -1,17 +1,11 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 public class CategoryPerMonth {
     public String name;
-    public Float value;
+    public double value;
 
 
-    public CategoryPerMonth(String name, Float value) {
+    public CategoryPerMonth(String name, double value) {
         this.name = name;
         this.value = value;
     }
@@ -24,11 +18,11 @@ public class CategoryPerMonth {
         this.name = name;
     }
 
-    public Float getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(Float value) {
+    public void setValue(double value) {
         this.value = value;
     }
 }

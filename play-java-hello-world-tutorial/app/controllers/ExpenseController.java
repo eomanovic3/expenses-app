@@ -14,6 +14,7 @@ import play.mvc.Security;
 import services.CustomRestService;
 import views.html.editExpense;
 import views.html.filterData;
+import views.html.getInfo;
 
 import javax.inject.Inject;
 import java.sql.Date;
@@ -57,6 +58,7 @@ public class ExpenseController extends Controller {
         if(expense.getExpenseAdded() == null){
             expense.setExpenseAdded(false);
         }
+        expense.setAmount((float) Math.round(expense.getAmount()));
 
         Form<Location> locationForm = formFactory.form(Location.class);
         Location location = locationForm.bindFromRequest().get();
@@ -79,6 +81,16 @@ public class ExpenseController extends Controller {
         return ok(editExpense.render(expenseForm, locationForm));
     }
 
+    @Security.Authenticated(Secured.class)
+    public Result getInfo(Integer id) {
+        var serviceResult = service.getExpenseById(id);
+        Expense expense = Json.fromJson(serviceResult, Expense.class);
+
+        Form<Expense> expenseForm = formFactory.form(Expense.class).fill(expense);
+        Form<Location> locationForm = formFactory.form(Location.class).fill(expense.getLocation());
+
+        return ok(getInfo.render(expenseForm, locationForm));
+    }
     @Security.Authenticated(Secured.class)
     public Result updateExpense() {
         Form<Expense> expenseForm = formFactory.form(Expense.class).bindFromRequest();
@@ -114,6 +126,36 @@ public class ExpenseController extends Controller {
         if (res != null) {
             return ok(views.html.index.render(expenses));
         } else return ok();
+    }
+
+    public static Map<String, List<CategoryPerMonth>> getCategoryExpenses(List<Expense> expenses) {
+        var map = new HashMap();
+        var expensesList = new ArrayList<CategoryPerMonth>();
+        var incomesList = new ArrayList<CategoryPerMonth>();
+
+        float expenseCounter = 0;
+        float incomesCounter = 0;
+
+        for (int i = 0; i < Expense.Category.values().length; i++) {
+            var category = Expense.Category.values()[i];
+            for (int j = 0; j < expenses.size(); j++) {
+                if (expenses.get(j).getCategory() == category){
+                    if( expenses.get(j).getExpenseAdded() == true) {
+                        expenseCounter = expenseCounter + expenses.get(j).getAmount();
+                    } else {
+                        incomesCounter = incomesCounter +  expenses.get(j).getAmount();
+                    }
+                }
+            }
+            var categoryToAdd = (category.toString().substring(0, 1).toUpperCase() + category.toString().substring(1)).replace("_"," ");
+            expensesList.add(new CategoryPerMonth(categoryToAdd, expenseCounter));
+            incomesList.add(new CategoryPerMonth(categoryToAdd, incomesCounter));
+            expenseCounter = 0;
+            incomesCounter = 0;
+        }
+        map.put("expenses", expensesList);
+        map.put("incomes", incomesList);
+        return map;
     }
 
     public static List<CustomList> getCategoryGraphData(List<Expense> expenses) {
@@ -197,7 +239,8 @@ public class ExpenseController extends Controller {
                     }
                 }
             }
-            listOfExpensesByCategories.add(new CategoryPerMonth(category.toString(), categoryMoneyCounter));
+            var categoryToAdd = (category.toString().substring(0, 1).toUpperCase() + category.toString().substring(1)).replace("_"," ");
+            listOfExpensesByCategories.add(new CategoryPerMonth(categoryToAdd,Math.round(categoryMoneyCounter)));
             categoryMoneyCounter = 0;
         }
         return listOfExpensesByCategories;
@@ -219,7 +262,7 @@ public class ExpenseController extends Controller {
         } else return ok();
     }
 
-    public Date returnDateFromLonVariables(Long dateInput) {
+    public Date returnDateFromLongVariables(Long dateInput) {
         String startDateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(dateInput));
         SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
         java.util.Date date = null;
@@ -235,8 +278,8 @@ public class ExpenseController extends Controller {
 
     public Result filterData(Long start, Long end) {
         // or you already have long value of date, use this instead of milliseconds variable.
-        var startDate = returnDateFromLonVariables(start);
-        var endDate = returnDateFromLonVariables(end);
+        var startDate = returnDateFromLongVariables(start);
+        var endDate = returnDateFromLongVariables(end);
 
         JsonNode res = service.getExpenses();
         List<Expense> expenses = new ArrayList<Expense>();
@@ -252,7 +295,8 @@ public class ExpenseController extends Controller {
             }
         }
         double incomesAmount = 0.00;
-        double expensesAmount = 0;
+        double expensesAmount = 0.00;
+        double totalValue = 0.00;
         for(Expense expense: expenses){
             if(expense.getExpenseAdded() == true){
                 expensesAmount = expensesAmount - expense.getAmount();
@@ -260,8 +304,15 @@ public class ExpenseController extends Controller {
                 incomesAmount = incomesAmount + expense.getAmount();
             }
         }
-        var total = expensesAmount + incomesAmount;
+        totalValue = expensesAmount + incomesAmount;
+        expensesAmount = Math.round(expensesAmount);
+        incomesAmount = Math.round(incomesAmount);
+        totalValue = Math.round(totalValue);
+
         var listOfExpensesByCategories = getListOfExpensesByCategories(expenses);
-        return ok(filterData.render(listOfExpensesByCategories, incomesAmount, expensesAmount, total));
+        var getCategoryExpensesGraphData = getCategoryExpenses(expenses).get("expenses");
+        var getCategoryIncomesGraphData = getCategoryExpenses(expenses).get("incomes");
+
+        return ok(filterData.render(listOfExpensesByCategories, incomesAmount, expensesAmount, totalValue, getCategoryExpensesGraphData, getCategoryIncomesGraphData));
     }
 }

@@ -115,6 +115,13 @@ public class Expense {
         String Format = format.format(this.date);
         return Format;
     }
+
+    @JsonIgnore
+    public String formatCategory(int number){
+        var categoryValue = category.values()[number].toString();
+        return (categoryValue.substring(0, 1).toUpperCase() + categoryValue.substring(1)).replace("_"," ");
+    }
+
     public Expense(Float amount, Category category, PAYMETHOD payMethod, Date date, String description, String payee,
                    Location location, Boolean expenseAdded) {
         this.amount = amount;

@@ -10,8 +10,8 @@ GET        /deleteExpense/:id               controllers.ExpenseController.delete
 GET        /addExpense                      controllers.ExpenseController.addExpense()
 GET        /editExpense/:id                 controllers.ExpenseController.editExpense(id: Integer)
 GET        /updateExpense                   controllers.ExpenseController.updateExpense()
-GET        /populateModal/:id               controllers.ExpenseController.populateModal(id: Integer)
 GET        /filterData/:start/:end           controllers.ExpenseController.filterData(start: Long, end: Long)
+GET        /getInfo/:id                      controllers.ExpenseController.getInfo(id: Integer)
 
 GET        /login                           controllers.UserController.login()
 GET        /authenticate                    controllers.UserController.authenticate()

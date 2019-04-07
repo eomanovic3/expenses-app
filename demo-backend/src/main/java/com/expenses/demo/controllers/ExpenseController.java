@@ -24,7 +24,6 @@ public class ExpenseController {
         return expensesService.getExpense(id);
     }
 
-    @PostMapping(value = "/addExpense")
     public ResponseEntity addExpense(@RequestBody Expense expense){
         return  expensesService.addExpense(expense);
     }

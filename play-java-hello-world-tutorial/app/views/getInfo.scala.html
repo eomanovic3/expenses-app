@@ -1,0 +1,69 @@
+@(expenseForm: Form[Expense], locationForm: Form[Location])
+@import play.libs.Json;
+
+
+<div class="modal-body">
+    <div class="card">
+        <div>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th class="font-weight-bold">Date</th>
+                        <th class="font-weight-bold">Category</th>
+                        <th class="font-weight-bold">Payee</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@expenseForm.get().getDate</td>
+                        <td>@expenseForm.get().getCategory</td>
+                        <td>@expenseForm.get().getPayee</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th class="font-weight-bold">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@expenseForm.get().getDescription</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th class="font-weight-bold">Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="location">Location</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+        var locationForm =JSON.parse(JSON.stringify(@Html(Json.toJson(locationForm.get()).toString())));
+        var coords = [locationForm.longitude, locationForm.latitude];
+        function reverseGeocode() {
+            var jsonRes = null;
+        fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon=' + coords[0] + '&lat=' + coords[1])
+                .then(function(response) {
+                    return response.json();
+                }).then(function(json) {
+            console.log(json);
+            jsonRes = json.display_name;
+            document.getElementById('location').innerText = jsonRes;
+        });
+        }
+        window.onload = reverseGeocode();
+</script>

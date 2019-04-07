@@ -40,12 +40,14 @@
                                 </button>
                             </div>
                             @if(expenses.length > 0) {
-                                <div class="ui segment transactions-list__wrapper">
+                                <div class="ui segment transactions-list__wrapper col-md-12">
                                 @for(calObj <- expenses) {
-                                    <div class="transaction-item"><div class="transaction-item__date">@calObj.getDateFormatted()</div>
-                                        <div class="transaction-item__info">
+                                    <div class="transaction-item infoItem" onclick="fillInfoData(@calObj.getExpenseId())"
+                                    data-toggle="modal" data-target="#infoModal">
+                                        <div class="transaction-item__date">@calObj.getDateFormatted()</div>
+                                         <div class="transaction-item__info">
                                             <i aria-hidden="true" class="grey arrow right icon"></i>
-                                            <div class="ui label">@calObj.getCategory()</div>
+                                            <div class="ui label">@calObj.formatCategory(calObj.getCategory().ordinal())</div>
                                             <span class="transaction-item__info__note"></span></div>
                                         <div class="transaction-item__amount">
                                         @if(calObj.getExpenseAdded() == true){
@@ -91,6 +93,28 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title font-weight-bold" id="exampleModalLongTitle">Info corner</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="cleanInfoForm()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="infoModalContent">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <script>
                     function reloadMap() {
                         setTimeout(()=>{
@@ -104,6 +128,19 @@
                         500
                     );}
 
+
+                    function fillInfoData(id) {
+                        $.ajax({
+                            url: '/getInfo/' + id,
+                            success: function (data) {
+                                $('#infoModalContent').append(data);
+                            }
+                        });
+                    }
+
+                    function cleanInfoForm() {
+                        $("#infoModalContent").empty();
+                    }
             </script>
         }
     }

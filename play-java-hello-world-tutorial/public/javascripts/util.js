@@ -1,5 +1,9 @@
 
 function deleteExpense(id) {
+    if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+
     if (!window.confirm("Are you sure?")) {
         e.preventDefault();
     } else {
@@ -31,20 +35,24 @@ function reloadEditMap(long, lat) {
         });
 
         markerSourceEdit.addFeature(iconFeatureEditTwo);
-        mapEdit.updateSize();                     },
+        mapEdit.updateSize();
+        },
     500
 );}
 
 function fillForm(id, long, lat){
+    if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+    $('#exampleModalEdit').modal('show');
+
     $.ajax({
-        url: '/editExpense/' + id,
-        success: function (data) {
-            $("#editModalContent").append(data);
-        }
-    });
-
-    reloadEditMap(long, lat);
-
+            url: '/editExpense/' + id,
+            success: function (data) {
+                $("#editModalContent").append(data);
+            }
+        });
+        reloadEditMap(long, lat);
 }
 
 function cleanForm() {

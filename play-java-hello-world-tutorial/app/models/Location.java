@@ -2,11 +2,11 @@ package models;
 
 public class Location{
     private Integer locationId;
-    private Double longitude;
-    private Double latitude;
+    private Float longitude;
+    private Float latitude;
     public Location(){}
 
-    public Location(Double longitude, Double latitude) {
+    public Location(Float longitude, Float latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }
@@ -19,19 +19,19 @@ public class Location{
         this.locationId = locationId;
     }
 
-    public Double getLongitude() {
+    public Float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
 
-    public Double getLatitude() {
+    public Float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 

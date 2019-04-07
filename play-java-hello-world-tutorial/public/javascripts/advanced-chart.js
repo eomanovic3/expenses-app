@@ -35,7 +35,7 @@ function drawPie(obj, divId, title) {
         "size": {
             "canvasHeight": 400,
             "canvasWidth": 590,
-            "pieOuterRadius": "90%"
+            "pieOuterRadius": "80%"
         },
         "data": {
             "sortOrder": "value-desc",
@@ -43,7 +43,7 @@ function drawPie(obj, divId, title) {
         },
         "labels": {
             "outer": {
-                "pieDistance": 32
+                "pieDistance": 12
             },
             "inner": {
                 "hideWhenLessThanPercentage": 3
