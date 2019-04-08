@@ -10,13 +10,17 @@
                     <tr>
                         <th class="font-weight-bold">Date</th>
                         <th class="font-weight-bold">Category</th>
-                        <th class="font-weight-bold">Payee</th>
+                        @if(expenseForm.get().getExpenseAdded() == true){
+                            <th class="font-weight-bold">Payee</th>
+                        } else {
+                            <th class="font-weight-bold">Payer</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>@expenseForm.get().getDate</td>
-                        <td>@expenseForm.get().getCategory</td>
+                        <td>@expenseForm.get().getDateFormatted</td>
+                        <td>@expenseForm.get().formatCategory(expenseForm.get().getCategory().ordinal())</td>
                         <td>@expenseForm.get().getPayee</td>
                     </tr>
                 </tbody>

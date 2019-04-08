@@ -2,7 +2,7 @@ package com.expenses.demo.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Table(name = "expense")

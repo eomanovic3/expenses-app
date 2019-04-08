@@ -107,11 +107,7 @@ svg{
     border-radius: 6px;
     border: 1px solid rgba(34, 36, 38, .15);
 }
-@media (min-width: 768px) {
-    .col-md-11 {
-        max-width: 90% !important;
-    }
-    .col-md-1 {
-        max-width: 10% !important;
-    }
+
+.table {
+    margin-bottom: unset !important;
 }

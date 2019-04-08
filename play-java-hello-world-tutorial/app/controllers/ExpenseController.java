@@ -17,7 +17,6 @@ import views.html.filterData;
 import views.html.getInfo;
 
 import javax.inject.Inject;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,9 +51,9 @@ public class ExpenseController extends Controller {
     @Security.Authenticated(Secured.class)
     public Result addExpense() {
         Form<Expense> expenseForm = formFactory.form(Expense.class);
-        Expense expense = expenseForm.bindFromRequest().get();
-        Calendar c = Calendar.getInstance();
-        expense.setDate(new java.sql.Date(c.getTimeInMillis()));
+        var expense = expenseForm.bindFromRequest().get();
+        expense.setDate(new Date());
+
         if(expense.getExpenseAdded() == null){
             expense.setExpenseAdded(false);
         }
@@ -105,6 +104,7 @@ public class ExpenseController extends Controller {
         expenseFromDatabase.setAmount(expense.getAmount());
         expenseFromDatabase.setDescription(expense.getDescription());
         expenseFromDatabase.setPayee(expense.getPayee());
+        expenseFromDatabase.setDate(expense.getDate());
         expenseFromDatabase.setPayMethod(expense.getPayMethod());
         expenseFromDatabase.setCategory(expense.getCategory());
         expenseFromDatabase.setLocation(location);
@@ -121,6 +121,7 @@ public class ExpenseController extends Controller {
     public Result getExpensesList(JsonNode res) {
         List<Expense> expenses = new ArrayList<Expense>();
         for (JsonNode expense : res) {
+            var exp = Json.fromJson(expense, Expense.class);
             expenses.add(Json.fromJson(expense, Expense.class));
         }
         if (res != null) {
@@ -269,11 +270,11 @@ public class ExpenseController extends Controller {
         Date startDate = null;
         try {
             date = sdf1.parse(startDateString);
-            startDate = new java.sql.Date(date.getTime());
+            startDate = new java.util.Date(date.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return startDate;
+        return date;
     }
 
     public Result filterData(Long start, Long end) {

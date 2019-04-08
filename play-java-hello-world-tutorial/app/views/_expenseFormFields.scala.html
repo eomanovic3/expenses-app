@@ -18,7 +18,7 @@
                 field = expenseForm("Category"),
                 options = Seq(
                     "HEALTH_CARE" -> "Health care",
-                    "FOOD" -> "Fodd",
+                    "FOOD" -> "Food",
                     "AUTOMOBILE" -> "Automobile",
                     "PRESENTS" -> "Presents",
                     "OTHER" -> "Other"
@@ -34,6 +34,8 @@
                     "OTHER" -> "Other"
                 ), 'class -> "form-control")
             </li>
+            <li class="list-group-item editModalListItem">
+            @helper.inputDate(expenseForm("Date"), 'class -> "form-control")</li>
             <li class="list-group-item editModalListItem" style="display: none;">
                 @helper.inputText(locationForm("locationId"), 'class -> "form-control", 'id -> "locationId")
                 @helper.inputText(locationForm("latitude"), 'class -> "form-control", 'id -> "latitudeEdit")

@@ -1,12 +1,12 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+import play.data.format.Formats;
 
 import java.text.SimpleDateFormat;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 
 public class Expense {
 
@@ -29,7 +29,11 @@ public class Expense {
     private Float amount;
     private Category category;
     private PAYMETHOD payMethod;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "PST")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
+
     private String description;
     private String payee;
     private Location location;
@@ -111,7 +115,7 @@ public class Expense {
 
     @JsonIgnore
     public String getDateFormatted() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-dd-MM");
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         String Format = format.format(this.date);
         return Format;
     }
