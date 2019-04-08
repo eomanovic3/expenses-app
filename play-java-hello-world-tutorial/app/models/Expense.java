@@ -29,9 +29,6 @@ public class Expense {
     private Float amount;
     private Category category;
     private PAYMETHOD payMethod;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "PST")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     private String description;

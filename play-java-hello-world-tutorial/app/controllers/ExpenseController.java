@@ -49,10 +49,9 @@ public class ExpenseController extends Controller {
     }
 
     @Security.Authenticated(Secured.class)
-    public Result addExpense() {
+    public Result addExpense() throws ParseException {
         Form<Expense> expenseForm = formFactory.form(Expense.class);
         var expense = expenseForm.bindFromRequest().get();
-        expense.setDate(new Date());
 
         if(expense.getExpenseAdded() == null){
             expense.setExpenseAdded(false);
@@ -64,6 +63,9 @@ public class ExpenseController extends Controller {
 
         expense.setLocation(location);
 
+        String oldstring = expense.getDateFormatted();
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(oldstring);
+        expense.setDate(date);
 
         JsonNode res = service.addExpense(expense);
         return getExpensesList(res);
